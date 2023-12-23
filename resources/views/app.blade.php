@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TEST</title>
+    <title>nameRP</title>
     <style>
+        body{
+            background-color: rgb(220, 220, 220);
+        }
     </style>
     @vite('resources/js/app.js')
 </head>

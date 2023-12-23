@@ -16,13 +16,35 @@
           </p>
         </div>
       </div>
+
+
+      <div class="main-content-two">
+        <div class="left-content">
+            <img class="game-icon-statistic" src="https://timeweb.com/media/default/0001/03/62eaa93beee17a77c4c89b53454ff03854b23d2b.png">
+        </div>
+        <div class="right-content">
+            <h1>Немного статистики</h1>
+            <p>За N-ое количество лет наш проект вырос до космических маштабов. И все растет и растет, ждем именно тебя, присоединяйся к десяткам тысяч игрокам нашего сервера!</p>
+          <ul>
+            <li>9999+ игроков играет на данный момент</li>
+            <li>10+ активных серверов</li>
+            <li>99999+ зарегестрированых персонажей</li>
+          </ul>
+        </div>
+      </div>
+
+
+
+
       <div class="how-start">
       <h1>Как начать игру:</h1>
       <ol>
         <li>
           <span class="step">Шаг 1.</span>
-          <span class="main-span">Скачайте лаунчер официального сайта </span><br>
-          <button class="download-btn">Скачать</button>
+          <a class="main-span" href=".../public/Launcher.png" download="Launcher.png" style=" text-decoration: none;  color: inherit; pointer:default;">
+            <span>Скачайте лаунчер официального сайта</span><br>
+            <button class="download-btn">Скачать</button>
+          </a>
         </li>
         <li>
           <span class="step">Шаг 2.</span>
@@ -31,11 +53,12 @@
         </li>
         <li>
           <span class="step">Шаг 3.</span>
-          <span class="main-span">Откройте лаунчер и выберите сервер.</span>
+          <span class="main-span">Откройте лаунчер ввойдите в свой аакаунт(либо зарегистрируйтесь)</span><br>
+          <span class="info-span">Зарегистрироваться можно по <a href="#">нажатию</a></span>
         </li>
         <li>
           <span class="step">Шаг 4.</span>
-          <span class="main-span">Впишите никнейм и нажмите на кнопку "Войти в игру".</span>
+          <span class="main-span">Выберите сервере и нажмите на кнопку "Войти в игру".</span>
         </li>
       </ol>
     </div>
@@ -62,7 +85,7 @@
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    box-shadow: 0 6px 9px rgba(0, 0, 0, 0.1);
+    box-shadow: 3px 5px 9px rgba(0, 0, 0, 0.4);
     border-radius: 45px;
     padding-left: 20px;
     padding-right: 20px;
@@ -70,7 +93,22 @@
     padding-bottom: 50px;
     justify-content: space-between;
   }
-
+.main-content-two{
+    display: flex;
+    background-color: rgb(220, 220, 220);
+    width: 97%;
+    margin-left: auto;
+    margin-top: 35px;
+    margin-right: auto;
+    text-align: center;
+    box-shadow: 3px 5px 9px rgba(0, 0, 0, 0.4);
+    border-radius: 45px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 60px;
+    padding-bottom: 50px;
+    justify-content: space-between;
+}
   .left-content {
     width: 60%;
     margin-top: auto;
@@ -88,15 +126,29 @@
     height: 300px;
     margin-bottom: 20px;
     border-radius: 25%;
-    box-shadow: 0 15px 17px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 17px rgba(0, 0, 0, 0.4);
   }
-
+.game-icon-statistic{
+    width: 650px;
+    height: 320px;
+    margin-bottom: 20px;
+    border-radius: 20%;
+    box-shadow: 6px 6px 60px rgba(0, 0, 0, 0.4);
+}
   h1 {
     font-family: 'Courier New', Courier, monospace;
     color:rgb(255, 101, 101);
     font-weight:1000;
     font-size: 2.2em;
   }
+ul{
+    list-style-type: none;
+}
+li{
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
 
   p {
     font-family: 'Arial', sans-serif;
@@ -150,11 +202,12 @@
   .how-start {
     margin-top: 20px;
     text-align:center;
+    margin-top: 35px;
     background-color: rgb(220, 220, 220);
     color: #ecf0f1; /* Цвет текста в блоке */
     padding: 20px;
     border-radius: 45px;
-    box-shadow: 0 6px 9px rgba(0, 0, 0, 0.1);
+    box-shadow: 3px 5px 9px rgba(0, 0, 0, 0.4);
   }
 .how-start h2 {
   font-size: 1.8em;

@@ -32,7 +32,6 @@ body {
     margin: 0;
     font-family: 'Courier New', Courier, monospace;
 }
-
 header {
     margin-top: 10px;
     margin-left: auto;
@@ -41,7 +40,7 @@ header {
     color: #fff;
     padding: 10px 0;
     max-width: 90%;
-    box-shadow: 0 6px 9px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 9px rgba(0, 0, 0, 0.5);
     border-radius: 35px;
 }
 
@@ -64,19 +63,21 @@ nav ul {
     display: flex;
 }
 
+
 nav li {
     color:grey;
     text-align: center;
     margin-right: 20px;
     font-size: 20px;
 }
-
+li:hover{
+    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
+}
 nav a {
     text-decoration: none;
     color: #fff;
     font-weight: bold;
 }
-
 .user-profile {
     font-weight: bold;
     font-size: 23px;
