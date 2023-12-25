@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,3 +15,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('{any?}', fn () => view('app'))->where('any', '.*');
+
+
+
+Route::post('/check-username', [AuthController::class, 'checkUsername']);
+Route::post('/check-email', [AuthController::class, 'checkEmail']);
+Route::post('/confirm-registration', [AuthController::class, 'confirmRegistration']);
+Route::post('/confirm-login', [AuthController::class, 'confirmLogin']);
+
+
+Route::get('/login')->name('login');
+Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::prefix('user')->middleware('auth')->group(function () {
+
+    Route::get('/private');
+
+});

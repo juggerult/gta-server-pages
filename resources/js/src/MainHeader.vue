@@ -9,7 +9,7 @@
                 <li><router-link to="/donate" style="color: grey;" >Донат</router-link></li>
             </ul>
         </nav>
-        <div class="user-profile" style="color: grey">ЛИЧНЫЙ КАБИНЕТ</div>
+        <div class="user-profile" style="color: grey"><router-link to="/login">ЛИЧНЫЙ КАБИНЕТ</router-link></div>
     </div>
 </header>
 <router-view />
@@ -52,6 +52,11 @@ header {
     max-width: 60%;
     margin: 0 auto;
 }
+.user-profile a {
+  text-decoration: none;
+  color: grey;
+}
+
 
 .logo {
     font-size: 1.9em;
@@ -79,6 +84,7 @@ nav a {
     font-weight: bold;
 }
 .user-profile {
+    text-decoration: none;
     font-weight: bold;
     font-size: 23px;
 }

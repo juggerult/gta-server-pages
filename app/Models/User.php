@@ -18,10 +18,26 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'username',
+        'player_status',
+        'balance',
+        'active',
+        'password',
     ];
+
+
+
+    public function players(){
+        return $this->hasMany(Player::class);
+    }
+
+    public function promocodes(){
+        return $this->belongsTo(Promocode::class);
+    }
+
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -30,7 +46,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
