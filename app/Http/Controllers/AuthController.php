@@ -38,6 +38,8 @@ class AuthController extends BaseController
         ]);
 
         $this->service->registrationAccount($data);
+
+        return response()->json(['error' => 'Вход успешен'], 201);
     }
 
     public function confirmLogin(Request $request){

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,8 @@ Route::post('/confirm-login', [AuthController::class, 'confirmLogin']);
 
 Route::get('/login')->name('login');
 Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::get('/news-data', [NewsController::class, 'getNewsData']);
 
 Route::prefix('user')->middleware('auth')->group(function () {
 
