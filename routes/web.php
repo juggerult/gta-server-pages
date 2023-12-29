@@ -29,6 +29,10 @@ Route::get('/news-data', [NewsController::class, 'getNewsData']);
 Route::get('/players-data', [AccountController::class, 'getCharacters']);
 Route::get('/auth-data', [AccountController::class, 'getAuth']);
 
+Route::put('/update-info-email', [AccountController::class, 'updateInfoEmail']);
+Route::put('/update-info-password', [AccountController::class, 'updateInfoPassword']);
+
+
 Route::middleware('auth')->group(function () {
 
     Route::get('/private', function(){

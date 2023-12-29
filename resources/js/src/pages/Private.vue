@@ -2,6 +2,17 @@
     <div id="content">
       <h1>Привет, {{ auth.username }}! <a @click="logout">Выйти</a></h1>
 
+      <div id="account-info">
+      <label for="info">Для изменения данных, введите новые и нажмите на кнопку</label>
+      <label for="info">{{ infoLabelText }}</label><br>
+      <label>Email:</label>
+      <input v-model="auth.email" id="email" type="email" name="email" form="email">
+      <button class="delete-button" @click="editAccountInfoEmail">Изменить</button><br>
+
+      <label>Новый Пароль:</label>
+      <input v-model="auth.password" id="password" type="password">
+      <button class="delete-button" @click="editAccountInfoPassword">Изменить</button>
+    </div>
 
       <h2><span>Ваш баланс: {{ auth.balance }}</span><a @click="recharge">Пополнить</a></h2>
 
@@ -46,6 +57,7 @@
         showDeleteModal: false,
         selectedCharacterId: null,
         confirmationInput: '',
+        infoLabelText: '',
       };
     },
 
@@ -72,6 +84,38 @@
           console.error('Ошибка при получении данных', error);
         }
       },
+
+
+      async editAccountInfoEmail() {
+        try {
+            const response = await axios.put('/update-info-email', { email: email.value });
+            if (response.status == 201) {
+                this.infoLabelText = "Изменения успешно сохранены";
+            } else {
+                this.infoLabelText = response.data.message;
+            }
+         } catch (error) {
+            console.error("Ошибка", error);
+            this.infoLabelText = "Ошибка при сохранении данных";
+            location.reload();
+         }
+        },
+
+      async editAccountInfoPassword() {
+        try {
+            const response = await axios.put('/update-info-password', { password: password.value });
+            if (response.status == 201) {
+                this.infoLabelText = "Изменения успешно сохранены";
+            } else {
+                this.infoLabelText = response.data.message;
+            }
+        } catch (error) {
+            console.error("Ошибка", error);
+        }
+      },
+
+
+
 
       logout() {
         // Реализуйте логику выхода
@@ -107,11 +151,10 @@
 
   <style scoped>
 #content {
-  max-width: 1920px;
+  max-width: 1700px;
   margin: 20px auto;
   padding: 20px;
   border-radius: 10px;
-  background-color: #f5f5f5;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -146,6 +189,49 @@ h2 {
   margin-top: 20px;
 }
 
+.delete-button{
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+.delete-button {
+    color: #fff;
+}
+
+.delete-button:hover {
+    color: #fff;
+}
+
+#account-info {
+  margin-top: 20px;
+  width: 50%;
+  background-color: #fff;
+  padding: 20px;
+  border: 2px solid #91c5e8;
+  border-radius: 10px;
+  box-shadow: 0 6px 9px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#account-info label {
+  margin-bottom: 5px;
+}
+
+#account-info input {
+  width: 30%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
 .character {
   width: 100%;
   padding: 20px;
@@ -226,17 +312,4 @@ h2 {
     padding: 8px;
     margin: 10px 0;
   }
-  .delete-button {
-  background-color: #e74c3c;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.delete-button:hover {
-  background-color: #c0392b;
-}
   </style>
