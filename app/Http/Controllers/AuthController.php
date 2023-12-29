@@ -65,4 +65,13 @@ class AuthController extends BaseController
         Auth::logout();
     }
 
+
+    public function login(){
+        if(Auth::check()){
+            return response()->json(['error' => 'Вход успешен'], 201);
+        }
+        return response()->json(['error' => 'Ошибка'], 500);
+
+    }
+
 }

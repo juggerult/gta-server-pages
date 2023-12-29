@@ -15,9 +15,13 @@
     </div>
   </template>
 
+
+
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+
+import { defineComponent, ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useRoute, useRouter } from 'vue-router';
 
 interface UserData {
   username: string;
@@ -29,32 +33,50 @@ export default defineComponent({
     let username = ref('');
     let password = ref('');
     const divError = ref('');
+    const router = useRouter();
+
+    const checkAuth = async () => {
+      try {
+        const response = await axios.post('/check-login');
+
+        if (response.status === 201) {
+          router.push('/private');
+        }
+      } catch (error) {
+        console.error('Error during authentication check:', error);
+      }
+    };
+
+    // Вызываем функцию checkAuth при монтировании компонента
+    onMounted(() => {
+      checkAuth();
+    });
 
     const submitForm = async () => {
-        try {
+      try {
         const response = await axios.post('/confirm-login', {
-            username: username.value,
-            password: password.value,
+          username: username.value,
+          password: password.value,
         });
 
         if (response.status === 201) {
-            window.location.href = '/';
+          router.push('/');
         } else {
-            divError.value = response.data.error || 'Не верные данные';
-            resetFormFields();
+          divError.value = response.data.error || 'Не верные данные';
+          resetFormFields();
         }
-    } catch (error) {
+      } catch (error) {
         console.log(error);
-        divError.value = error.response.data.error || 'Произошла ошибка входа, попробуйте через некоторое время';
-    }
-    }
-
+        divError.value =
+          error.response.data.error ||
+          'Произошла ошибка входа, попробуйте через некоторое время';
+      }
+    };
 
     const resetFormFields = () => {
       username.value = '';
       password.value = '';
     };
-
 
     return {
       username,
@@ -64,6 +86,7 @@ export default defineComponent({
     };
   },
 });
+
 </script>
 
 

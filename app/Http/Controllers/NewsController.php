@@ -10,7 +10,7 @@ class NewsController extends BaseController
 {
 
     public function getNewsData(){
-        $data = News::all();
+        $data = News::orderBy('created_at', 'desc')->get();
 
         return response()->json(NewsResource::collection($data));
     }

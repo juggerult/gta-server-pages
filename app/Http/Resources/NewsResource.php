@@ -18,6 +18,7 @@ class NewsResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'news' => $this->news,
+            'created_at' => $this->created_at,
         ];
     }
 }

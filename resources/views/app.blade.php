@@ -7,9 +7,7 @@
     <title>nameRP</title>
     <style>
     body {
-        background-size: cover;
-        margin: 0;
-        padding: 0;
+        background-color: white
     }
 
     </style>
@@ -29,8 +27,7 @@
 
             var randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 
-
-            document.body.style.backgroundImage = 'url(' + randomBackground + ')';
+           //document.body.style.backgroundImage = 'url(' + randomBackground + ')';
         });
         </script>
 

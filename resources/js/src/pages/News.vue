@@ -1,11 +1,18 @@
 <template>
-    <div class="container">
-        <li v-for="item in items" :key="item.id">{{ item.title }}</li>
+    <div class="news-container">
+      <div v-for="item in items" :key="item.id" class="news-item">
+        <div class="news-header">
+          <div class="news-title">{{ item.title }}</div>
+          <div class="news-date">{{ formatDate(item.created_at) }}</div>
+        </div>
+        <div class="news-content">{{ item.news }}</div>
+      </div>
     </div>
   </template>
 
 <script>
 import axios from 'axios';
+import moment from 'moment';
 
 export default {
   data() {
@@ -18,55 +25,64 @@ export default {
   },
   methods: {
     fetchData() {
-      axios.get('/news-data')
-        .then(response => {
+      axios
+        .get('/news-data')
+        .then((response) => {
           this.items = response.data;
-          console.log(this.items);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Ошибка при получении данных', error);
         });
+    },
+    formatDate(dateString) {
+      return moment(dateString).format('MMMM D, YYYY');
     },
   },
 };
 </script>
 
+
   <style>
-  .container {
+  .news-container {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background-color: rgb(220, 220, 220);
-    box-shadow: 0 6px 9px rgba(0, 0, 0, 0.5);
-    border-radius: 35px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
   }
 
-  .news-block {
+  .news-item {
     margin: 10px;
     padding: 15px;
     box-shadow: 0 6px 9px rgba(0, 0, 0, 0.5);
-    border-radius: 35px;
-    background-color: rgb(224, 218, 218);
+    border-radius: 15px;
+    background-color: rgb(220, 220, 220);
     overflow: hidden;
     flex: 1 1 300px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .news-item:hover {
+    transform: scale(1.05);
+  }
+
+  .news-header {
+    margin-bottom: 10px;
   }
 
   .news-title {
     font-size: 1.8em;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
-    margin-bottom: 10px;
   }
 
   .news-date {
     color: #888;
-    margin-bottom: 10px;
   }
 
   .news-content {
     line-height: 1.6;
+    max-width: 300px;
   }
   </style>

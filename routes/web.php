@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
@@ -15,23 +16,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('{any?}', fn () => view('app'))->where('any', '.*');
-
-
 
 Route::post('/check-username', [AuthController::class, 'checkUsername']);
 Route::post('/check-email', [AuthController::class, 'checkEmail']);
+Route::post('/check-login', [AuthController::class, 'login']);
+
 Route::post('/confirm-registration', [AuthController::class, 'confirmRegistration']);
 Route::post('/confirm-login', [AuthController::class, 'confirmLogin']);
-
-
-Route::get('/login')->name('login');
-Route::post('/logout', [AuthController::class, 'logout']);
+Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/news-data', [NewsController::class, 'getNewsData']);
+Route::get('/players-data', [AccountController::class, 'getCharacters']);
+Route::get('/auth-data', [AccountController::class, 'getAuth']);
 
-Route::prefix('user')->middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {
 
-    Route::get('/private');
+    Route::get('/private', function(){
+        return redirect()->to('/login');
+    });
 
 });
+
+Route::fallback(function(){
+    return redirect()->to('/');
+});
+
+Route::get('{any?}', fn () => view('app'))->where('any', '.*');
