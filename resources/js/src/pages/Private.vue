@@ -1,20 +1,21 @@
 <template>
     <div id="content">
-      <h1>Привет, {{ auth.username }}! <a @click="logout">Выйти</a></h1>
+      <h1>Привет, {{ authData.username }}!<a @click="logout" class="funcBtn">Выйти</a></h1>
+      У нас появилась новика - <span><router-link to="/promocode" style="text-decoration: none;">Промокоды</router-link></span>
 
       <div id="account-info">
-      <label for="info">Для изменения данных, введите новые и нажмите на кнопку</label>
-      <label for="info">{{ infoLabelText }}</label><br>
-      <label>Email:</label>
-      <input v-model="auth.email" id="email" type="email" name="email" form="email">
-      <button class="delete-button" @click="editAccountInfoEmail">Изменить</button><br>
+        <label for="info">Для изменения данных, введите новые и нажмите на кнопку</label>
+        <label for="info">{{ infoLabelText }}</label><br>
+        <label>Email:</label>
+        <input v-model="authData.email" id="email" type="email" name="email" form="email">
+        <button class="delete-button" @click="editAccountInfoEmail">Изменить</button><br>
 
-      <label>Новый Пароль:</label>
-      <input v-model="auth.password" id="password" type="password">
-      <button class="delete-button" @click="editAccountInfoPassword">Изменить</button>
-    </div>
+        <label>Новый Пароль:</label>
+        <input v-model="authData.password" id="password" type="password">
+        <button class="delete-button" @click="editAccountInfoPassword">Изменить</button>
+      </div>
 
-      <h2><span>Ваш баланс: {{ auth.balance }}</span><a @click="recharge">Пополнить</a></h2>
+      <h2><span>Ваш баланс: {{ authData.balance }}</span><a @click="recharge" class="funcBtn">Пополнить</a></h2>
 
       <h1>Персонажи</h1>
       <div id="characters">
@@ -28,12 +29,28 @@
             <button class="delete-button" @click="confirmDelete(character.id)">Удалить</button>
           </div>
         </div>
-        <div v-for="index in 3 - characters.length" :key="index" class="no-characters">
+        <div v-for="index in 3 - characters.length" :key="index" class="no-characters" @click="showRegistrationForm = true">
           <span>+</span>
         </div>
       </div>
 
-
+      <div v-if="showRegistrationForm" class="delete-modal">
+        <div class="delete-modal-content">
+            <span @click="closeRegisterForm" class="close">&times;</span>
+        <h2>Форма регистрации</h2>
+        <input v-model="newUserData.username" id="newUsername" type="text" placeholder="Никнейм" required>
+        <input v-model="newUserData.promocode" id="promocode" type="text" placeholder="Промокод" required>
+        <label>Выберите серверер</label>
+        <select id="server" name="server">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+        <button class="registration-button" @click="register">Зарегистрироваться</button>
+        </div>
+      </div>
 
       <div v-if="showDeleteModal" class="delete-modal">
         <div class="delete-modal-content">
@@ -53,11 +70,17 @@
     data() {
       return {
         characters: [],
-        auth: {},
+        authData: {},
         showDeleteModal: false,
         selectedCharacterId: null,
         confirmationInput: '',
         infoLabelText: '',
+        showRegistrationForm: false,
+        newUserData: {
+          username: '',
+          email: '',
+          password: '',
+        },
       };
     },
 
@@ -79,43 +102,39 @@
       async getAuthUserData() {
         try {
           const response = await axios.get('/auth-data');
-          this.auth = response.data;
+          this.authData = response.data;
         } catch (error) {
           console.error('Ошибка при получении данных', error);
         }
       },
 
-
       async editAccountInfoEmail() {
         try {
-            const response = await axios.put('/update-info-email', { email: email.value });
-            if (response.status == 201) {
-                this.infoLabelText = "Изменения успешно сохранены";
-            } else {
-                this.infoLabelText = response.data.message;
-            }
-         } catch (error) {
-            console.error("Ошибка", error);
-            this.infoLabelText = "Ошибка при сохранении данных";
-            location.reload();
-         }
-        },
-
-      async editAccountInfoPassword() {
-        try {
-            const response = await axios.put('/update-info-password', { password: password.value });
-            if (response.status == 201) {
-                this.infoLabelText = "Изменения успешно сохранены";
-            } else {
-                this.infoLabelText = response.data.message;
-            }
+          const response = await axios.put('/update-info-email', { email: this.newUserData.email });
+          if (response.status === 201) {
+            this.infoLabelText = "Изменения успешно сохранены";
+          } else {
+            this.infoLabelText = response.data.message;
+          }
         } catch (error) {
-            console.error("Ошибка", error);
+          console.error("Ошибка", error);
+          this.infoLabelText = "Ошибка при сохранении данных";
+          location.reload();
         }
       },
 
-
-
+      async editAccountInfoPassword() {
+        try {
+          const response = await axios.put('/update-info-password', { password: this.newUserData.password });
+          if (response.status === 201) {
+            this.infoLabelText = "Изменения успешно сохранены";
+          } else {
+            this.infoLabelText = response.data.message;
+          }
+        } catch (error) {
+          console.error("Ошибка", error);
+        }
+      },
 
       logout() {
         // Реализуйте логику выхода
@@ -136,6 +155,11 @@
         this.showDeleteModal = false;
       },
 
+      closeRegisterForm(){
+        this.showRegistrationForm = false;
+      },
+
+
       deleteCharacter() {
         if (this.confirmationInput.toUpperCase() === 'DELETE') {
           console.log('Удаление персонажа с ID:', this.selectedCharacterId);
@@ -145,11 +169,29 @@
           alert('Неверное подтверждение. Попробуйте еще раз.');
         }
       },
+
+      register() {
+        // Реализуйте логику регистрации, например, отправку данных на сервер
+        // После успешной регистрации скройте форму
+        alert('Регистрация успешна!');
+        this.showRegistrationForm = false;
+      },
     },
   };
   </script>
 
   <style scoped>
+
+
+.registration-form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 2px solid #91c5e8;
+  border-radius: 10px
+}
+
 #content {
   max-width: 1700px;
   margin: 20px auto;
@@ -158,7 +200,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-a {
+.funcBtn{
   color: red;
   text-decoration: none;
   transition: color 0.3s ease-in-out;
@@ -308,7 +350,7 @@ h2 {
   }
 
   .delete-modal-content input {
-    width: 100%;
+    width: 90%;
     padding: 8px;
     margin: 10px 0;
   }

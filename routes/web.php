@@ -28,6 +28,7 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/news-data', [NewsController::class, 'getNewsData']);
 Route::get('/players-data', [AccountController::class, 'getCharacters']);
 Route::get('/auth-data', [AccountController::class, 'getAuth']);
+Route::get('/promocode-data', [AccountController::class, 'getPromo']);
 
 Route::put('/update-info-email', [AccountController::class, 'updateInfoEmail']);
 Route::put('/update-info-password', [AccountController::class, 'updateInfoPassword']);

@@ -46,8 +46,6 @@ export default defineComponent({
         console.error('Error during authentication check:', error);
       }
     };
-
-    // Вызываем функцию checkAuth при монтировании компонента
     onMounted(() => {
       checkAuth();
     });
@@ -60,7 +58,7 @@ export default defineComponent({
         });
 
         if (response.status === 201) {
-          router.push('/');
+          router.push('/private');
         } else {
           divError.value = response.data.error || 'Не верные данные';
           resetFormFields();

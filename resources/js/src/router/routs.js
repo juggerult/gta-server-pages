@@ -5,6 +5,7 @@ import Forum from "../pages/Forum.vue";
 import Registration from "../pages/Register.vue";
 import Login from "../pages/Login.vue"
 import Private from "../pages/Private.vue";
+import Promocode from "../pages/Promocode.vue";
 
 const routes = [
     {
@@ -40,6 +41,11 @@ const routes = [
     {
         path: '/private',
         component: Private,
+    },
+
+    {
+        path: '/promocode',
+        component: Promocode,
     },
 ];
 
