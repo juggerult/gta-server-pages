@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Player;
+use App\Models\Promocode;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,36 @@ class AccountController extends BaseController
         }catch (\Exception $e) {
             return response()->json(['message' => 'Ошибка при сохранении данных', 'error' => $e->getMessage()], 500);
         }
+    }
+
+
+
+    public function getPromo(){
+        try {
+            return Promocode::where('user_id', Auth::user()->id)->exists();
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Ошибка при получении данных', 'error' => $e->getMessage()], 500);
+        }
+    }
+    public function createPromo(Request $request){
+        $data = $request->input('promocode');
+        if(!Promocode::where('promocode', $data)->exists()){
+            $this->service->createPromo($data);
+        }else{
+            return;
+        }
+
+    }
+    public function getPromoData(){
+        $data = Promocode::where('user_id', Auth::user()->id)->get();
+
+        return response()->json($data);
+    }
+    public function deletePromo(){
+        $promocode = Promocode::where('user_id' , Auth::user()->id);
+
+        $promocode->delete();
+        $promocode->save();
     }
 
 }

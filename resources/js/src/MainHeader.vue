@@ -36,10 +36,10 @@ header {
     margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgb(220, 220, 220);
     color: #fff;
     padding: 10px 0;
     max-width: 90%;
+    background-color: rgb(220, 220, 220);
     box-shadow: 0 6px 9px rgba(0, 0, 0, 0.5);
     border-radius: 35px;
 }

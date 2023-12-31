@@ -2,6 +2,7 @@
 
 namespace App\Services\Post;
 
+use App\Models\Promocode;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,6 +27,14 @@ class Service{
 
         $user->password = bcrypt($data);
         $user->save();
+    }
+
+
+    public function createPromo($data){
+        $promocode = Promocode::create([
+            'promocode' => $data,
+            'user_id' => Auth::user()->id,
+        ]);
     }
 
 }

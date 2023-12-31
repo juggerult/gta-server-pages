@@ -28,7 +28,12 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/news-data', [NewsController::class, 'getNewsData']);
 Route::get('/players-data', [AccountController::class, 'getCharacters']);
 Route::get('/auth-data', [AccountController::class, 'getAuth']);
-Route::get('/promocode-data', [AccountController::class, 'getPromo']);
+
+Route::get('/promocode-available', [AccountController::class, 'getPromo']);
+Route::post('/create-promo', [AccountController::class, 'createPromo']);
+Route::get('/promocode-data', [AccountController::class, 'getPromoData']);
+
+Route::post('/promocode-delete', [AccountController::class, 'deletePromo']);
 
 Route::put('/update-info-email', [AccountController::class, 'updateInfoEmail']);
 Route::put('/update-info-password', [AccountController::class, 'updateInfoPassword']);
