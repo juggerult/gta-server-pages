@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PlayerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,10 @@ Route::post('/check-login', [AuthController::class, 'login']);
 Route::post('/confirm-registration', [AuthController::class, 'confirmRegistration']);
 Route::post('/confirm-login', [AuthController::class, 'confirmLogin']);
 Route::get('/logout', [AuthController::class, 'logout']);
+
+Route::post('/players-registration', [PlayerController::class, 'registration']);
+Route::post('/check-nickname', [PlayerController::class, 'checkNickname']);
+Route::post('/check-promo', [PlayerController::class, 'checkPromo']);
 
 Route::get('/news-data', [NewsController::class, 'getNewsData']);
 Route::get('/players-data', [AccountController::class, 'getCharacters']);

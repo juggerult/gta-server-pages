@@ -66,7 +66,7 @@
                 <input type="email" id="email" name="email" required>
 
                 <label for="amount">Сумма:</label>
-                <input type="number" id="amount" name="amount" required>
+                <input type="number" id="amount" name="amount" min="0" required>
 
                 <button type="submit">Пополнить</button>
         </div>

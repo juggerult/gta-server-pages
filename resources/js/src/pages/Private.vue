@@ -1,11 +1,11 @@
 <template>
     <div id="content">
+      <label for="info">{{ infoLabelText }}</label><br>
       <h1>Привет, {{ authData.username }}!<a @click="logout" class="funcBtn">Выйти</a></h1>
       У нас появилась новика - <span><router-link to="/promocode" style="text-decoration: none;">Промокоды</router-link></span>
 
       <div id="account-info">
         <label for="info">Для изменения данных, введите новые и нажмите на кнопку</label>
-        <label for="info">{{ infoLabelText }}</label><br>
         <label>Email:</label>
         <input v-model="authData.email" id="email" type="email" name="email" form="email">
         <button class="delete-button" @click="editAccountInfoEmail">Изменить</button><br>
@@ -25,7 +25,7 @@
             <p>Сервер: {{ character.server }}</p>
             <p>Уровень: {{ character.level }}</p>
             <p>Баланс: {{ character.balance_money + character.balance_bank }}</p>
-            <p>Вип: {{ character.active_vip }}</p>
+            <p>Гендер: {{ character.gender }}</p>
             <button class="delete-button" @click="confirmDelete(character.id)">Удалить</button>
           </div>
         </div>
@@ -38,8 +38,9 @@
         <div class="delete-modal-content">
             <span @click="closeRegisterForm" class="close">&times;</span>
         <h2>Форма регистрации</h2>
-        <input v-model="newUserData.username" id="newUsername" type="text" placeholder="Никнейм" required>
-        <input v-model="newUserData.promocode" id="promocode" type="text" placeholder="Промокод" required>
+        <label for="info">{{ infoLabelText }}</label>
+        <input id="nickname" name="nickname" type="text" placeholder="Никнейм" required>
+        <input id="promocode" name="promocode" type="text" nullable placeholder="Промокод (не обязательно)" required>
         <label>Выберите серверер</label>
         <select id="server" name="server">
             <option value="1">1</option>
@@ -48,7 +49,13 @@
             <option value="4">4</option>
             <option value="5">5</option>
         </select><br><br>
-        <button class="registration-button" @click="register">Зарегистрироваться</button>
+        <div style="display: inline-flex;">
+            <input type="radio" name="gender" value="Мужчина">
+            <label>Мужчина</label>
+            <input type="radio" name="gender" value="Женщина">
+            <label>Женщина</label>
+        </div><br>
+        <button class="delete-button" @click="register">Зарегистрироваться</button>
         </div>
       </div>
 
@@ -76,11 +83,6 @@
         confirmationInput: '',
         infoLabelText: '',
         showRegistrationForm: false,
-        newUserData: {
-          username: '',
-          email: '',
-          password: '',
-        },
       };
     },
 
@@ -90,7 +92,7 @@
     },
 
     methods: {
-      async getPlayersData() {
+      async getPlayersData() {              // Информация о персонажах пользователя
         try {
           const response = await axios.get('/players-data');
           this.characters = response.data;
@@ -99,7 +101,7 @@
         }
       },
 
-      async getAuthUserData() {
+      async getAuthUserData() {           // Информация о пользователе
         try {
           const response = await axios.get('/auth-data');
           this.authData = response.data;
@@ -108,9 +110,9 @@
         }
       },
 
-      async editAccountInfoEmail() {
+      async editAccountInfoEmail() {            // Обновление данных пользователя
         try {
-          const response = await axios.put('/update-info-email', { email: this.newUserData.email });
+          const response = await axios.put('/update-info-email', { email: email.value });
           if (response.status === 201) {
             this.infoLabelText = "Изменения успешно сохранены";
           } else {
@@ -119,13 +121,12 @@
         } catch (error) {
           console.error("Ошибка", error);
           this.infoLabelText = "Ошибка при сохранении данных";
-          location.reload();
         }
       },
 
-      async editAccountInfoPassword() {
+      async editAccountInfoPassword() {           // Обновление данных пользователя
         try {
-          const response = await axios.put('/update-info-password', { password: this.newUserData.password });
+          const response = await axios.put('/update-info-password', { password: password.value });
           if (response.status === 201) {
             this.infoLabelText = "Изменения успешно сохранены";
           } else {
@@ -137,7 +138,7 @@
       },
 
       logout() {
-        // Реализуйте логику выхода
+        window.location.href = '/logout';
       },
 
       recharge() {
@@ -170,18 +171,44 @@
         }
       },
 
-      register() {
-        // Реализуйте логику регистрации, например, отправку данных на сервер
-        // После успешной регистрации скройте форму
-        alert('Регистрация успешна!');
-        this.showRegistrationForm = false;
-      },
+      async register() {
+            var nickname = document.getElementById('nickname').value;
+            var promocode = document.getElementById('promocode').value || null;
+            var server = document.getElementById('server').value;
+            var gender = document.querySelector('input[name="gender"]:checked').value;
+
+            try {   // Проверка доступности никнейма, промокода и регистрация
+
+                const checkNickname = await axios.post('/check-nickname', { nickname: nickname });
+                    if (checkNickname.data.available) {
+                        const checkPromo = await axios.post('/check-promo', { promocode: promocode });
+                            if (checkPromo.data.available) {
+                                const register = await axios.post('/players-registration', {
+                                    nickname: nickname,
+                                    promocode: promocode,
+                                    server: server,
+                                    gender: gender
+                                });
+                                location.reload();
+                            } else {
+                                this.infoLabelText = "Нет такого промокода";
+                            }
+                    } else {
+                        this.infoLabelText = "Такой никнейм уже занят";
+                    }
+                    location.reload();
+            } catch (error) {
+                console.error('Ошибка', error);
+                this.infoLabelText = "Ошибка, попробуйте через некоторое время";
+            }
+         }
     },
   };
   </script>
 
-  <style scoped>
 
+
+  <style scoped>
 
 .registration-form {
   max-width: 400px;
@@ -208,6 +235,11 @@
 
 a:hover {
   color: red;
+}
+
+a:hover {
+  color: black;
+  cursor: pointer;
 }
 
 h1 {
@@ -275,7 +307,7 @@ h2 {
   margin-bottom: 10px;
 }
 .character {
-  width: 100%;
+  width: 90%;
   padding: 20px;
   background-color: #fff;
   border: 2px solid #91c5e8;
@@ -299,6 +331,7 @@ h2 {
   border-radius: 50%;
   width: 250px;
   height: 250px;
+  cursor: pointer;
   box-shadow: 0 6px 9px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
@@ -354,4 +387,49 @@ h2 {
     padding: 8px;
     margin: 10px 0;
   }
+
+  select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+select:hover {
+  border-color: #999;
+}
+
+select:focus {
+  outline: none;
+  border-color: #555;
+}
+
+
+select option:checked {
+  background-color: #e0e0e0;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+  padding: 10px;
+}
+
+input[type="radio"]:hover {
+  cursor: pointer;
+}
+
+input[type="radio"]:checked + label {
+  font-weight: bold;
+  color: #007BFF;
+}
+
+label {
+  display: inline-block;
+  padding: 5px;
+}
   </style>
