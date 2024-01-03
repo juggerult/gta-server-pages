@@ -42,7 +42,7 @@ export default {
 </script>
 
 
-  <style>
+<style>
   .news-container {
     max-width: 800px;
     margin: 20px auto;
