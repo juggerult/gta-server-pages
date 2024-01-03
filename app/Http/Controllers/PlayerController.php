@@ -43,4 +43,12 @@ class PlayerController extends BaseController
             }
         }
     }
+
+
+    public function deletePlayer(Request $request){
+        $accountId = $request->input('accountId');
+
+        Player::find($accountId)->delete();
+
+    }
 }

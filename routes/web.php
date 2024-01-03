@@ -30,6 +30,8 @@ Route::post('/players-registration', [PlayerController::class, 'registration']);
 Route::post('/check-nickname', [PlayerController::class, 'checkNickname']);
 Route::post('/check-promo', [PlayerController::class, 'checkPromo']);
 
+Route::post('/player-delete', [PlayerController::class, 'deletePlayer']);
+
 Route::get('/news-data', [NewsController::class, 'getNewsData']);
 Route::get('/players-data', [AccountController::class, 'getCharacters']);
 Route::get('/auth-data', [AccountController::class, 'getAuth']);

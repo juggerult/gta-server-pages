@@ -71,8 +71,8 @@ class Service{
             'time_active_vip' => Carbon::now()->addDays(7),
         ]);
 
-        $promocodeOwner = Promocode::where('promocode', $data['promocode']);
-        $promocodeOwner->count_entered_promo = $promocodeOwner->count_entered_promo + 1;
+        $promocodeOwner = Promocode::where('promocode', $data['promocode'])->first();
+        $promocodeOwner->increment('count_entered_promo');
         $promocodeOwner->save();
     }
 

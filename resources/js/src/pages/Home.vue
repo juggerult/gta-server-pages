@@ -54,7 +54,7 @@
         <li>
           <span class="step">Шаг 3.</span>
           <span class="main-span">Откройте лаунчер ввойдите в свой аакаунт(либо зарегистрируйтесь)</span><br>
-          <span class="info-span">Зарегистрироваться можно по <a href="#">нажатию</a></span>
+          <span class="info-span">Зарегистрироваться можно по <a href="/registration">нажатию</a></span>
         </li>
         <li>
           <span class="step">Шаг 4.</span>
@@ -260,7 +260,7 @@ import { defineComponent, ref } from 'vue';
 export default defineComponent({
   setup() {
     const startPlaying = () => {
-      window.scroll(0, 500);
+      window.scroll(0, 1500);
     };
 
     const images = [

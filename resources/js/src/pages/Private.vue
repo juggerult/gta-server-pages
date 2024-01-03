@@ -142,7 +142,7 @@
       },
 
       recharge() {
-        // Реализуйте логику пополнения баланса
+        window.location.href = '/donate';
       },
 
       confirmDelete(characterId) {
@@ -151,7 +151,6 @@
       },
 
       closeDeleteModal() {
-        this.selectedCharacterId = null;
         this.confirmationInput = '';
         this.showDeleteModal = false;
       },
@@ -163,9 +162,9 @@
 
       deleteCharacter() {
         if (this.confirmationInput.toUpperCase() === 'DELETE') {
-          console.log('Удаление персонажа с ID:', this.selectedCharacterId);
-          // Вместо console.log добавьте логику удаления через axios
+          const deletePlayer = axios.post('/player-delete', {accountId: this.selectedCharacterId});
           this.closeDeleteModal();
+          location.reload();
         } else {
           alert('Неверное подтверждение. Попробуйте еще раз.');
         }
