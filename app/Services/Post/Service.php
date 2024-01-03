@@ -2,11 +2,14 @@
 
 namespace App\Services\Post;
 
+use App\Models\Donate;
 use App\Models\Player;
 use App\Models\Promocode;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+
+use function Laravel\Prompts\error;
 
 class Service{
 
@@ -74,6 +77,26 @@ class Service{
         $promocodeOwner = Promocode::where('promocode', $data['promocode'])->first();
         $promocodeOwner->increment('count_entered_promo');
         $promocodeOwner->save();
+    }
+
+
+    public function donateForm($data){
+        $donation = Donate::create([
+            'login' => $data['username'],
+            'email' => $data['email'],
+            'sum' => $data['sum'],
+            'successful'=> true,
+        ]);
+
+        if (!$donation) {
+           $donation->successful = false;
+           $donation->save();
+           return;
+        }
+
+        $user = User::where('username', $data['username'])->first();
+        $user->balance = $user->balance + $data['sum'];
+        $user->save();
     }
 
 }

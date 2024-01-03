@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DonateController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PlayerController;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,9 @@ Route::post('/promocode-delete', [AccountController::class, 'deletePromo']);
 
 Route::put('/update-info-email', [AccountController::class, 'updateInfoEmail']);
 Route::put('/update-info-password', [AccountController::class, 'updateInfoPassword']);
+
+
+Route::post('/donate-form', [DonateController::class, 'donateForm']);
 
 
 Route::middleware('auth')->group(function () {
