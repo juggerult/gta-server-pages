@@ -63,13 +63,14 @@ class Service{
 
     }
     public function registerWithPromo($data){
+        $promo = Promocode::where('promocode', $data['promocode'])->first();
         Player::create([
             'nickname' => $data['nickname'],
             'promocode' => $data['promocode'],
             'gender' => $data['gender'],
             'server' => $data['server'],
             'user_id' => Auth::user()->id,
-            'balance_bank' => 10000,
+            'balance_bank' => $promo->money,
             'active_vip' => true,
             'time_active_vip' => Carbon::now()->addDays(7),
         ]);
@@ -78,6 +79,10 @@ class Service{
         $promocodeOwner->increment('count_entered_promo');
         $promocodeOwner->save();
     }
+
+
+
+
 
 
     public function donateForm($data){
@@ -98,5 +103,7 @@ class Service{
         $user->balance = $user->balance + $data['sum'];
         $user->save();
     }
+
+
 
 }

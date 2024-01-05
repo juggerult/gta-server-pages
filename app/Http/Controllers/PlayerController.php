@@ -6,6 +6,7 @@ use App\Models\Player;
 use App\Models\Promocode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PlayerController extends BaseController
 {
@@ -30,19 +31,22 @@ class PlayerController extends BaseController
 
         return response()->json(['available' => !$player]);
     }
-    public function checkPromo(Request $request){
-        $promo = $request->input('promocode');
+    public function checkPromo(Request $request)
+    {
+        try {
+            $promo = $request->input('promocode');
 
-        if($promo == null){
-            return response()->json(['available' => true]);
-        }else{
-            if(Promocode::where('promocode', $promo)->exists()){
+            if (Promocode::where('promocode', $promo)->exists()) {
                 return response()->json(['available' => true]);
-            }else{
+            } else {
                 return response()->json(['available' => false]);
             }
+        } catch (\Exception $e) {
+            Log::error('Ошибка при проверке промокода: ' . $e->getMessage());
+            return response()->json(['available' => false]);
         }
     }
+
 
 
     public function deletePlayer(Request $request){
@@ -50,5 +54,12 @@ class PlayerController extends BaseController
 
         Player::find($accountId)->delete();
 
+    }
+
+
+    public function getPlayerInfo($id){
+        $player = Player::find($id);
+
+        return response()->json($player);
     }
 }

@@ -4,19 +4,19 @@
         <div class="package">
           <h2>Стартовый пакет Bronze</h2>
           <p>25000 тугриков <br> VIP аккаунт на 14 дней</p>
-          <button @click="firstPack" >Купить за 150</button>
+          <button>Купить за 150</button>
         </div>
 
         <div class="package">
           <h2>Стартовый пакет Silver</h2>
           <p>55000 тугриков <br> VIP аккаунт на 30 дней</p>
-          <button @click="secondPack">Купить за 250</button>
+          <button>Купить за 250</button>
         </div>
 
         <div class="package">
           <h2>Стартовый пакет Gold</h2>
           <p>100000 тугриков <br> VIP аккаунт навсегда</p>
-          <button @click="thirdPack">Купить за 300</button>
+          <button>Купить за 300</button>
         </div>
 
        </section>
@@ -49,6 +49,7 @@
               <td>50</td>
             </tr>
           </table>
+          <h3>Донат-паки покупаются в игре</h3>
         </div>
 
       <div class="donation-form">
@@ -90,26 +91,6 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
-    },
-
-    async firstPack(){
-        try{
-            const donate = axios.post<boolean>('/package-first');
-            if(){
-
-            }
-            window.location.href = '/private';
-        }catch(error){
-            console.error(error);
-        }
-    },
-
-    async secondPack(){
-
-    },
-
-    async thirdPack(){
-
     },
 
 

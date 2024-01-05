@@ -19,7 +19,7 @@
 
       <h1>Персонажи</h1>
       <div id="characters">
-        <div v-if="characters.length > 0" v-for="character in characters" :key="character.id" class="character">
+        <div v-if="characters.length > 0" v-for="character in characters" :key="character.id" class="character" @click="playerPage(character.id)">
           <div class="character-info">
             <h3>{{ character.nickname }}</h3>
             <p>Сервер: {{ character.server }}</p>
@@ -40,7 +40,7 @@
         <h2>Форма регистрации</h2>
         <label for="info">{{ infoLabelText }}</label>
         <input id="nickname" name="nickname" type="text" placeholder="Никнейм" required>
-        <input id="promocode" name="promocode" type="text" nullable placeholder="Промокод (не обязательно)" required>
+        <input id="promocode" name="promocode" type="text" nullable placeholder="Промокод (не обязательно)">
         <label>Выберите серверер</label>
         <select id="server" name="server">
             <option value="1">1</option>
@@ -172,35 +172,58 @@
 
       async register() {
             var nickname = document.getElementById('nickname').value;
-            var promocode = document.getElementById('promocode').value || null;
+            var promocode = document.getElementById('promocode').value || "serverPromo";
             var server = document.getElementById('server').value;
-            var gender = document.querySelector('input[name="gender"]:checked').value;
+            var genderInput = document.querySelector('input[name="gender"]:checked');
 
-            try {   // Проверка доступности никнейма, промокода и регистрация
+        if (!genderInput) {
+            this.infoLabelText = "Выберите пол";
+            return;
+        }
 
-                const checkNickname = await axios.post('/check-nickname', { nickname: nickname });
-                    if (checkNickname.data.available) {
-                        const checkPromo = await axios.post('/check-promo', { promocode: promocode });
-                            if (checkPromo.data.available) {
-                                const register = await axios.post('/players-registration', {
-                                    nickname: nickname,
-                                    promocode: promocode,
-                                    server: server,
-                                    gender: gender
-                                });
-                                location.reload();
-                            } else {
-                                this.infoLabelText = "Нет такого промокода";
-                            }
-                    } else {
-                        this.infoLabelText = "Такой никнейм уже занят";
-                    }
-                    location.reload();
-            } catch (error) {
-                console.error('Ошибка', error);
-                this.infoLabelText = "Ошибка, попробуйте через некоторое время";
+        var gender = genderInput.value;
+
+        try {
+            // Проверка доступности никнейма
+            const checkNickname = await axios.post('/check-nickname', { nickname: nickname });
+
+            if (!checkNickname.data.available) {
+                this.infoLabelText = "Такой никнейм уже занят";
+                return;
             }
-         }
+
+            // Проверка доступности промокода
+            if (promocode !== null) {
+                const checkPromo = await axios.post('/check-promo', { promocode: promocode });
+
+                if (!checkPromo.data.available) {
+                    this.infoLabelText = "Нет такого промокода";
+                    return;
+                }
+            }
+
+            // Регистрация игрока
+            const register = await axios.post('/players-registration', {
+                nickname: nickname,
+                promocode: promocode,
+                server: server,
+                gender: gender
+            });
+
+            // Обновление страницы после успешной регистрации
+            location.reload();
+        } catch (error) {
+            console.error('Ошибка', error);
+            this.infoLabelText = "Ошибка, попробуйте через некоторое время";
+
+        }
+       },
+
+
+
+        async playerPage(characterId){
+            this.$router.push({ path: `/player/${characterId}` });
+        }
     },
   };
   </script>
@@ -260,6 +283,7 @@ h2 {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   margin-top: 20px;
+  cursor: pointer;
 }
 
 .delete-button{

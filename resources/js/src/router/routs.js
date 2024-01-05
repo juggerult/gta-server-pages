@@ -6,6 +6,7 @@ import Registration from "../pages/Register.vue";
 import Login from "../pages/Login.vue"
 import Private from "../pages/Private.vue";
 import Promocode from "../pages/Promocode.vue";
+import Player from "../pages/Player.vue";
 
 const routes = [
     {
@@ -47,6 +48,12 @@ const routes = [
         path: '/promocode',
         component: Promocode,
     },
+
+    {
+        path: '/player/:id',
+        name: 'player',
+        component: Player,
+    }
 ];
 
 export default routes;

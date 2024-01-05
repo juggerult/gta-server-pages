@@ -49,6 +49,8 @@ Route::put('/update-info-password', [AccountController::class, 'updateInfoPasswo
 
 Route::post('/donate-form', [DonateController::class, 'donateForm']);
 
+Route::get('/get-player-info/{id}', [PlayerController::class, 'getPlayerInfo']);
+
 
 Route::middleware('auth')->group(function () {
 
