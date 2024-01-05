@@ -2,57 +2,21 @@
     <main>
       <section class="donate-packages">
         <div class="package">
-          <h2>Стартовый пакет 1</h2>
-          <p>Описание пакета 1.</p>
-          <button>Купить за $10</button>
+          <h2>Стартовый пакет Bronze</h2>
+          <p>25000 тугриков <br> VIP аккаунт на 14 дней</p>
+          <button @click="firstPack" >Купить за 150</button>
         </div>
 
         <div class="package">
-          <h2>Стартовый пакет 2</h2>
-          <p>Описание пакета 2.</p>
-          <button>Купить за $20</button>
+          <h2>Стартовый пакет Silver</h2>
+          <p>55000 тугриков <br> VIP аккаунт на 30 дней</p>
+          <button @click="secondPack">Купить за 250</button>
         </div>
 
         <div class="package">
-          <h2>Стартовый пакет 3</h2>
-          <p>Описание пакета 3.</p>
-          <button>Купить за $30</button>
-        </div>
-
-        <div class="package">
-          <h2>Стартовый пакет 4</h2>
-          <p>Описание пакета 3.</p>
-          <button>Купить за $30</button>
-        </div>
-
-        <div class="package">
-          <h2>Стартовый пакет 5</h2>
-          <p>Описание пакета 3.</p>
-          <button>Купить за $30</button>
-        </div>
-
-        <div class="package">
-          <h2>Стартовый пакет 6</h2>
-          <p>Описание пакета 3.</p>
-          <button>Купить за $30</button>
-        </div>
-
-        <div class="package">
-          <h2>Стартовый пакет 7</h2>
-          <p>Описание пакета 3.</p>
-          <button>Купить за $30</button>
-        </div>
-
-        <div class="package">
-          <h2>Стартовый пакет 8</h2>
-          <p>Описание пакета 3.</p>
-          <button>Купить за $30</button>
-        </div>
-
-        <div class="package">
-          <h2>Стартовый пакет 10</h2>
-          <p>Описание пакета 3.</p>
-          <button>Купить за $30</button>
+          <h2>Стартовый пакет Gold</h2>
+          <p>100000 тугриков <br> VIP аккаунт навсегда</p>
+          <button @click="thirdPack">Купить за 300</button>
         </div>
 
        </section>
@@ -66,23 +30,23 @@
             </tr>
             <tr>
               <td>Смена ника</td>
-              <td>$50</td>
+              <td>50</td>
             </tr>
             <tr>
               <td>Снятие варна</td>
-              <td>$100</td>
+              <td>100</td>
             </tr>
             <tr>
               <td>Вип на неделю</td>
-              <td>$300</td>
+              <td>300</td>
             </tr>
             <tr>
               <td>Вип навсегда</td>
-              <td>$1000</td>
+              <td>1000</td>
             </tr>
             <tr>
               <td>Выход из тюрмы</td>
-              <td>$50</td>
+              <td>50</td>
             </tr>
           </table>
         </div>
@@ -127,6 +91,28 @@ export default defineComponent({
         console.error(error);
       }
     },
+
+    async firstPack(){
+        try{
+            const donate = axios.post<boolean>('/package-first');
+            if(){
+
+            }
+            window.location.href = '/private';
+        }catch(error){
+            console.error(error);
+        }
+    },
+
+    async secondPack(){
+
+    },
+
+    async thirdPack(){
+
+    },
+
+
   },
 });
 </script>
