@@ -1,2 +1,2 @@
 in process...
-hard with front)
+visual so bad)
