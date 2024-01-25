@@ -19,20 +19,24 @@
 
       <h1>Персонажи</h1>
       <div id="characters">
-        <div v-if="characters.length > 0" v-for="character in characters" :key="character.id" class="character" @click="playerPage(character.id)">
-          <div class="character-info">
-            <h3>{{ character.nickname }}</h3>
-            <p>Сервер: {{ character.server }}</p>
-            <p>Уровень: {{ character.level }}</p>
-            <p>Баланс: {{ character.balance_money + character.balance_bank }}</p>
-            <p>Гендер: {{ character.gender }}</p>
-            <button class="delete-button" @click="confirmDelete(character.id)">Удалить</button>
-          </div>
-        </div>
-        <div v-for="index in 3 - characters.length" :key="index" class="no-characters" @click="showRegistrationForm = true">
-          <span>+</span>
-        </div>
-      </div>
+  <div v-if="characters.length > 0" v-for="character in characters" :key="character.id" class="character" @click="playerPage(character.id)">
+    <div class="character-info">
+      <h3>{{ character.nickname }}</h3>
+      <p>Сервер: {{ character.server }}</p>
+      <p>Уровень: {{ character.level }}</p>
+      <p>Баланс: {{ character.balance_money + character.balance_bank }}</p>
+      <p>Гендер: {{ character.gender }}</p>
+      <button class="delete-button" @click="confirmDelete(character.id)">Удалить</button>
+    </div>
+    <div class="character-image">
+      <img :src="getRandomImage()" alt="Random Image">
+    </div>
+  </div>
+  <div v-for="index in 3 - characters.length" :key="index" class="no-characters" @click="showRegistrationForm = true">
+    <span>+</span>
+  </div>
+</div>
+
 
       <div v-if="showRegistrationForm" class="delete-modal">
         <div class="delete-modal-content">
@@ -83,6 +87,12 @@
         confirmationInput: '',
         infoLabelText: '',
         showRegistrationForm: false,
+        images:[
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJcPWe0pMENgXJqtQBYuVPrQHpEHfrkvM-sg&usqp=CAU",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH15lYyvk_IU0D-yL9z4-pVGwUTv2niZ5YsFXM_hOxXC9j4hTZM_YjYrl1hmJLOtfj1AM&usqp=CAU",
+            "https://arz-wiki.com/wp-content/uploads/2022/11/193-1.png",
+
+        ],
       };
     },
 
@@ -136,6 +146,11 @@
           console.error("Ошибка", error);
         }
       },
+
+      getRandomImage() {
+      const randomIndex = Math.floor(Math.random() * this.images.length);
+      return this.images[randomIndex];
+    },
 
       logout() {
         window.location.href = '/logout';
@@ -337,14 +352,16 @@ h2 {
   border-radius: 10px;
   box-shadow: 0 6px 9px rgba(0, 0, 0, 0.2);
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /* Центрирование содержимого по вертикали */
 }
 
 .character-info {
-  margin-top: 10px;
+  flex: 1; /* Растягиваем на всю доступную ширину */
+  margin-right: 20px; /* Добавляем отступ между информацией и изображением */
 }
-
+.character-image {
+  flex-shrink: 0; /* Изображение не будет уменьшаться, если блок character слишком маленький */
+}
 .no-characters {
   margin: auto;
   align-items: center;
